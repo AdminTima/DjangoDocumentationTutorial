@@ -1,0 +1,15 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Registration{% endblock %}
+
+
+{% block content %}
+    <h1>{{ err }}</h1>
+    <form  method="post">
+        {% csrf_token %}
+        <input type="text" name="username" id="username" placeholder="Enter your name">
+        <input type="text" name="pass1" id="pass1" placeholder="Enter your password">
+        <input type="text" name="pass2" id="pass2" placeholder="Repeat your pasword">
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}
