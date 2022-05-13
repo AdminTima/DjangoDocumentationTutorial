@@ -1,7 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
+from django.db.models import F
 
 from .models import Question, Choice
 
@@ -19,7 +20,6 @@ class DetailView(generic.DetailView):
     template_name = 'polls/detail.html'
 
 
-
 class ResultView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
@@ -32,7 +32,7 @@ def vote(request, question_id):
     except (KeyError, Choice.DoesNotExist):
         return render(request, 'polls/detail.html', {'question': question, 'err': 'You did not select a choice'})
     else:
-        selected_choice.votes += 1
+        selected_choice.votes = F('votes') + 1
         selected_choice.save()
 
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
