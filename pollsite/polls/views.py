@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.db.models import F
-
+from django.contrib.auth.models import User
 from .models import Question, Choice
 
 
@@ -36,3 +36,5 @@ def vote(request, question_id):
         selected_choice.save()
 
     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+

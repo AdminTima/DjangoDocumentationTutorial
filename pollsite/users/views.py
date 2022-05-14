@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -18,3 +19,27 @@ def register(request):
                 except Exception:
                     err = 'Error occured'
     return render(request, 'users/reg.html')
+
+
+class LoginUserView(LoginView):
+    template_name = 'users/login.html'
+    next_page = 'polls:index'
+
+
+# class UserChangePassword(PasswordChangeView):
+#     template_name = 'users/changepass.html'
+#     success_url = 'polls:index'
+
+
+def profile(request):
+    err = ''
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user)
+        new_name = request.POST['username']
+        user.username = new_name
+        try:
+            user.save()
+            return HttpResponseRedirect(request.path_info)
+        except Exception:
+            err = 'ERron'
+    return render(request, 'users/profile.html')
